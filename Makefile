@@ -6,10 +6,15 @@ DB_NAME=sistema_bancario
 
 # Caminho para os arquivos SQL
 SCHEMA=./sql/schema.sql
+SCHEMADROP=./sql/schema_drop.sql
 INSERTS=./sql/inserts.sql
 
+# Apaga tabelas do banco de dados
+drop-tables:
+	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) < $(SCHEMADROP)
+
 # Apaga e recria apenas o schema
-reset-schema:
+create-tables:
 	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) < $(SCHEMA)
 
 # Apaga e recria o schema e popula com dados iniciais
