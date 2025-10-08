@@ -1,10 +1,6 @@
 CREATE DATABASE IF NOT EXISTS sistema_bancario;
 USE sistema_bancario;
-DROP TABLE IF EXISTS Clientes_PJ;
-DROP TABLE IF EXISTS Clientes_PF;
-DROP Table IF EXISTS Clientes;
-DROP TABLE IF EXISTS Transacoes;
-DROP TABLE IF EXISTS Contas;
+
 CREATE TABLE IF NOT EXISTS Clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -53,5 +49,6 @@ CREATE TABLE IF NOT EXISTS Transacoes (
     descricao VARCHAR(255),
     FOREIGN KEY (conta_id) REFERENCES Contas(id) ON DELETE CASCADE
 );
+
 CREATE INDEX idx_cliente_id ON Contas(cliente_id);
 CREATE INDEX idx_conta_id ON Transacoes(conta_id);
