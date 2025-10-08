@@ -6,10 +6,17 @@ DB_NAME=sistema_bancario
 
 # Caminho para os arquivos SQL
 SCHEMA=./sql/schema.sql
+SCHEMADROP=./sql/schema_drop.sql
+SCHEMACADASTRO=./sql/schema_cadastro.sql
+SCHAMAALTERSTATUS=./sql/schema_alter_status.sql
 INSERTS=./sql/inserts.sql
 
-# Apaga e recria apenas o schema
-reset-schema:
+# Apaga tabelas
+drop-tables:
+	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) < $(SCHEMADROP)
+
+# Cria as tabelas
+create-tables:
 	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) < $(SCHEMA)
 
 # Apaga e recria o schema e popula com dados iniciais
@@ -20,3 +27,19 @@ reset-db:
 # Executa apenas o seed (dados iniciais)
 inserts:
 	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) $(DB_NAME) < $(INSERTS)
+
+add-cliente:
+	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) < $(SCHEMACADASTRO)
+
+alter-status-conta:
+	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) < $(SCHAMAALTERSTATUS)
+	toggle-status:
+	@if [ -z "$(C_CONTA)" ]; then \
+		echo "ERRO: É necessário fornecer o ID da conta. Exemplo: make toggle-status ACCOUNT_ID=10"; \
+		exit 1; \
+	fi
+	
+	@echo "Executando CALL alter_status_conta($(C_CONTA)) na base $(DB_NAME)..."
+	# Executa o comando CALL diretamente no container MySQL
+	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) $(DB_NAME) -e "CALL alter_status_conta($(C_CONTA));"
+
