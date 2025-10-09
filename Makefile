@@ -7,6 +7,7 @@ DB_NAME=sistema_bancario
 # Caminho para os arquivos SQL
 SCHEMA=./sql/schema.sql
 SCHEMADROP=./sql/schema_drop.sql
+SCHEMAALTERSTATUS=./schema_alter_Cstatus.sql
 INSERTS=./sql/inserts.sql
 
 # Apaga tabelas do banco de dados
