@@ -33,13 +33,14 @@ add-cliente:
 
 alter-status-conta:
 	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) < $(SCHAMAALTERSTATUS)
-	toggle-status:
-	@if [ -z "$(C_CONTA)" ]; then \
+
+toggle-status: alter-status-conta
+	@if [ -z "$(ACCOUNT_ID)" ]; then \
 		echo "ERRO: É necessário fornecer o ID da conta. Exemplo: make toggle-status ACCOUNT_ID=10"; \
 		exit 1; \
 	fi
 	
-	@echo "Executando CALL alter_status_conta($(C_CONTA)) na base $(DB_NAME)..."
-	# Executa o comando CALL diretamente no container MySQL
-	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) $(DB_NAME) -e "CALL alter_status_conta($(C_CONTA));"
+	@echo "Executando CALL alter_status_conta($(ACCOUNT_ID)) na base $(DB_NAME)..."
+	# Executa o comando CALL diretamente no container MySQL, usando a variável corrigida
+	docker exec -i $(CONTAINER_NAME) mysql -u $(DB_USER) -p$(DB_PASS) $(DB_NAME) -e "CALL alter_status_conta($(ACCOUNT_ID));"
 

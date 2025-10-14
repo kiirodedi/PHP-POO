@@ -24,7 +24,9 @@ BEGIN
     SET status = status_novo
     WHERE id = c_cod;
 
-    SELECT CONCAT('Status da Conta ', conta_id_param, ' alterado de ', status_atual, ' para ', novo_status, '.') AS Mensagem;
+    -- ...código existente...
+    SELECT CONCAT('Status da Conta ', c_cod, ' alterado de ', status_atual, ' para ', status_novo, '.') AS Mensagem;
+-- ...código existente...
 END $$
 
 DELIMITER ;
